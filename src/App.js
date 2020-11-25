@@ -1,25 +1,56 @@
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
 
-function App() {
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      boxColors: Array(200)
+    };
+  }
+
+  handleMouseOver = (i) => {
+    const newColors = this.state.boxColors.slice();
+    let randomColor = Math.floor(Math.random() * 16777215).toString(16);
+    newColors[i] = "#" + randomColor;
+    this.setState({ boxColors: newColors });
+  }
+
+  render() {
+    const boxes = [];
+
+    for (let i = 0; i < this.state.boxColors.length; i++) {
+      boxes.push(this.renderBox(i));
+    }
+    return (
+      <section>
+        {boxes}
+      </section>
+    )
+  }
+
+  renderBox = (i) => {
+    return (
+      <Box
+        key={i}
+        handleMouseOver={() => this.handleMouseOver(i)}
+        bgColor={this.state.boxColors[i]}
+      />
+    )
+  }
+}
+
+function Box(props) {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div
+      className="box"
+      onMouseOver={props.handleMouseOver}
+      style={{ backgroundColor: props.bgColor }}
+    >
+
     </div>
   );
 }
 
 export default App;
+
